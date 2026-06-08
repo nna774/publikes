@@ -43,9 +43,9 @@ module "prd" {
 
 ```
 cd ui/
-npm i
+pnpm ci
 vim .env.production.local
-npm run build
+pnpm run build
 ruby deploy.rb $S3_BUCKET_NAME $CLOUDFRONT_DISTRIBUTION_ID
 ```
 
