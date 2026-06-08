@@ -1,7 +1,7 @@
-import { useCallback, useEffect, useMemo, useRef } from "react";
+import { Component, ReactNode, Suspense, useCallback, useEffect, useMemo, useRef } from "react";
 import { usePageInfinite } from "./Api";
 import "./App.css";
-import { Tweet } from "react-tweet";
+import { Tweet, TweetSkeleton, TweetNotFound } from "react-tweet";
 
 function App() {
   const startBatch = useMemo(() => {
@@ -75,7 +75,11 @@ function App() {
                     className="liked-tweet"
                     data-status-id={status.id}
                   >
-                    <Tweet id={status.id} />
+                    <ErrorBoundary fallback={<TweetNotFound />}>
+                      <Suspense fallback={<TweetSkeleton />}>
+                        <Tweet id={status.id} />
+                      </Suspense>
+                    </ErrorBoundary>
                   </div>
                 );
               })}
@@ -92,6 +96,27 @@ function App() {
       </div>
     </>
   );
+}
+
+type ErrorBoundaryProps = {
+  fallback: ReactNode;
+  children: ReactNode;
+};
+
+class ErrorBoundary extends Component<ErrorBoundaryProps, { hasError: boolean }> {
+  constructor(props: ErrorBoundaryProps) {
+    super(props);
+    this.state = { hasError: false };
+  }
+
+  static getDerivedStateFromError() {
+    return { hasError: true };
+  }
+
+  render() {
+    if (this.state.hasError) return this.props.fallback;
+    return this.props.children;
+  }
 }
 
 function useInteractionObserver(
