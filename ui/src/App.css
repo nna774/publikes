@@ -26,6 +26,10 @@ body {
   text-align: center;
 }
 
+.original-tweet {
+  margin-top: -1.5em;
+}
+
 .load-more {
   height: 30px;
   font-size: 25px;

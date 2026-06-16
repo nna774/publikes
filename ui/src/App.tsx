@@ -80,6 +80,15 @@ function App() {
                         <Tweet id={status.id} />
                       </Suspense>
                     </ErrorBoundary>
+                    <div className="original-tweet">
+                      <a
+                        href={`https://x.com/_/status/${status.id}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        original
+                      </a>
+                    </div>
                   </div>
                 );
               })}
