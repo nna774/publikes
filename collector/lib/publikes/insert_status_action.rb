@@ -37,7 +37,7 @@ module Publikes
           env.states.start_execution(
             state_machine_arn: env.state_machine_arn_store_status,
             name: "status-#{s.fetch(:id)}",
-            input: JSON.generate({status_id: s.fetch(:id)}),
+            input: JSON.generate({status_id: s.fetch(:id), no_overwrite: false, visited_status_ids: []}),
           )
         rescue Aws::States::Errors::ExecutionAlreadyExists
         end
