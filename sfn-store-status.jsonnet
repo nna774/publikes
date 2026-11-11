@@ -1,31 +1,8 @@
 local tfstate = std.parseJson(std.extVar('TFSTATE'));
 
 local definition = {
-  StartAt: 'Initialize',
+  StartAt: 'InvokeStoreStatus',
   States: {
-    Initialize: {
-      Type: 'Pass',
-      Result: [],
-      ResultPath: '$.visited_status_ids',
-      Next: 'DefaultNoOverwrite',
-    },
-    DefaultNoOverwrite: {
-      Type: 'Choice',
-      Choices: [
-        {
-          Variable: '$.no_overwrite',
-          IsPresent: true,
-          Next: 'InvokeStoreStatus',
-        },
-      ],
-      Default: 'SetNoOverwriteFalse',
-    },
-    SetNoOverwriteFalse: {
-      Type: 'Pass',
-      Result: false,
-      ResultPath: '$.no_overwrite',
-      Next: 'InvokeStoreStatus',
-    },
     InvokeStoreStatus: {
       Type: 'Task',
       Resource: 'arn:aws:states:::lambda:invoke',
@@ -119,10 +96,7 @@ local definition = {
       },
       MaxConcurrency: 0,
       ResultPath: null,
-      Next: 'Done',
-    },
-    Done: {
-      Type: 'Succeed',
+      End: true,
     },
   },
 };
