@@ -20,7 +20,7 @@ Publikes::Enumerate.new(environment:).each_page do |page|
 
     resp = environment.states.start_execution(
       state_machine_arn: environment.state_machine_arn_store_status,
-      input: JSON.generate({ status_id:, no_overwrite: true }),
+      input: JSON.generate({ status_id:, no_overwrite: true, visited_status_ids: [] }),
     )
     executions << { status_id:, arn: resp.execution_arn, status: 'RUNNING' }
   end
